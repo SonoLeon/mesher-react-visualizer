@@ -70,6 +70,34 @@ Vite prints a local address in the terminal, usually **<http://localhost:5173>**
 | `npm run preview` | Serve the production build locally               |
 | `npm run lint`    | Run ESLint                                       |
 
+## 🧪 Test input
+
+The [`examples/`](examples/) folder contains the input geometries used to test the application. At the moment it holds one file:
+
+- [`examples/testPowerBus.json`](examples/testPowerBus.json): a power bus antenna made of a few hundred bricks and a single copper material. It exists to **check that the whole pipeline works** (loading, region creation, meshing and visualization) without preparing your own input.
+
+How to use it:
+
+1. Run `npm run dev` and open the app.
+2. Click the file input ("Inserisci la geometria") and select `examples/testPowerBus.json`.
+3. The antenna is shown in the left canvas. Set the **Density** and click **Meshing** to generate the mesh in the right canvas.
+
+> ⏱️ **Meshing takes time.** The power bus geometry is complex, so generating its mesh is computationally heavy and may take a while, especially with a high **Density**. The page can look frozen until the computation ends. Lower the density for quicker tests.
+
+### lightView
+
+The **lightView** button switches how the generated mesh is drawn. In the default view every mesh cell is a separate 3D object, which gives a detailed rendering but becomes slow to navigate when the mesh has many cells. With lightView active, all cells are drawn as *instances* of a single shared shape with a simple, unlit material. The mesh is the same, but rotating and zooming stay smooth on large meshes. Click it again to go back to the detailed view.
+
+### Input file format
+
+The geometry is a JSON file with three keys:
+
+| Key               | Description                                                |
+| ----------------- | ---------------------------------------------------------- |
+| `materials`       | List of materials (`sigmar`, `eps_re`, `tan_D`, `mur`)     |
+| `bricksMatrix`    | One row per brick: `[xmin, xmax, ymin, ymax, zmin, zmax]`  |
+| `bricksMaterials` | 1-based index of the material of each brick                |
+
 ## 📁 Project structure
 
 ```text
@@ -79,6 +107,7 @@ src/
 ├── components/     # React / Three.js components for visualization
 └── utils/          # TypeScript port of the MATLAB meshing functions
     └── mainfile.ts # Entry point of the meshing pipeline
+examples/           # Input geometries (JSON) for testing the app
 ```
 
 ## 🎓 Thesis overview
